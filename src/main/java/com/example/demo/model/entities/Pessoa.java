@@ -8,10 +8,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tb_pessoa")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Pessoa implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     private String nome;
     private Date dataNascimento;
