@@ -62,6 +62,7 @@ public class Aluguel implements Serializable  {
     public void setDataDevolucao(Calendar dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
     }
+
     public BigDecimal getValorTotal() {
         return valorTotal;
     }

@@ -17,15 +17,20 @@ public class Carro implements Serializable {
     private String cor;
     private BigDecimal valorDiaria;
 
+    @ManyToOne
+    @JoinColumn(name = "modelo_carro_id")
+    private ModeloCarro modeloCarro;
+
     public Carro() {
 
     }
-    public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria) {
+    public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modeloCarro) {
         this.id = id;
         this.placa = placa;
         this.chassi = chassi;
         this.cor = cor;
         this.valorDiaria = valorDiaria;
+        this.modeloCarro = modeloCarro;
     }
 
     public Long getId() {
@@ -67,4 +72,8 @@ public class Carro implements Serializable {
     public void setValorDiaria(BigDecimal valorDiaria) {
         this.valorDiaria = valorDiaria;
     }
+
+    public ModeloCarro getModeloCarro() { return modeloCarro; }
+
+    public void setModeloCarro(ModeloCarro modeloCarro) { this.modeloCarro = modeloCarro; }
 }

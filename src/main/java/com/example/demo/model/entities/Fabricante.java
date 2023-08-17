@@ -3,6 +3,8 @@ package com.example.demo.model.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_fabricante")
@@ -12,6 +14,9 @@ public class Fabricante implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+
+    @OneToMany(mappedBy = "fabricante", cascade = CascadeType.ALL)
+    private List<ModeloCarro> modelosCarro = new ArrayList<>();
 
     public Fabricante() {
 
@@ -37,4 +42,8 @@ public class Fabricante implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public List<ModeloCarro> getModelosCarro() { return modelosCarro; }
+
+    public void setModelosCarro(List<ModeloCarro> modelosCarro) { this.modelosCarro = modelosCarro; }
 }
