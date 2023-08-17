@@ -35,4 +35,5 @@ build/
 
 ./pg-data
 
-pg-data
+pg-data/
+
