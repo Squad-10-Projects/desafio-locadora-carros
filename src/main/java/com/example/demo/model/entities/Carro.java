@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_carro")
@@ -20,6 +22,14 @@ public class Carro implements Serializable {
     @ManyToOne
     @JoinColumn(name = "modelo_carro_id")
     private ModeloCarro modeloCarro;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tb_carro_acessorio",
+            joinColumns = @JoinColumn(name = "carro_id"),
+            inverseJoinColumns = @JoinColumn(name = "acessorio_id")
+    )
+    private Set<Acessorio> acessorios = new HashSet<>();
 
     public Carro() {
 
@@ -76,4 +86,8 @@ public class Carro implements Serializable {
     public ModeloCarro getModeloCarro() { return modeloCarro; }
 
     public void setModeloCarro(ModeloCarro modeloCarro) { this.modeloCarro = modeloCarro; }
+
+    public Set<Acessorio> getAcessorios() { return acessorios; }
+
+    public void setAcessorios(Set<Acessorio> acessorios) { this.acessorios = acessorios; }
 }
