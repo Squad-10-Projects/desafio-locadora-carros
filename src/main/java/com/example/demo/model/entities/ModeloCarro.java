@@ -1,5 +1,6 @@
 package com.example.demo.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class ModeloCarro implements Serializable {
     @Column(name = "categoria")
     private Categoria categoria;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "fabricante_id")
     private Fabricante fabricante;

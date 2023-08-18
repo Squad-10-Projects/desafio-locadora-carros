@@ -1,5 +1,6 @@
 package com.example.demo.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ public class Fabricante implements Serializable {
     private Long id;
     private String nome;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "fabricante", cascade = CascadeType.ALL)
     private List<ModeloCarro> modelosCarro = new ArrayList<>();
 
