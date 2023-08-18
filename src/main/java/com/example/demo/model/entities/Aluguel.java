@@ -31,6 +31,10 @@ public class Aluguel implements Serializable  {
 
     }
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "apolice_id")
+    private ApoliceSeguro apoliceSeguro;
+
     public long getID() {
         return ID;
     }
