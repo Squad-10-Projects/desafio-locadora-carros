@@ -6,14 +6,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ModeloCarroService {
 
     @Autowired
-    private ModeloCarroRepository repository;
+    private ModeloCarroRepository modeloCarroRepository;
 
     public List<ModeloCarro> findAll() {
-        return repository.findAll();
+        return modeloCarroRepository.findAll();
+    }
+
+    public ModeloCarro create(ModeloCarro modeloCarro) {
+
+        return modeloCarroRepository.save(modeloCarro);
+    }
+
+    public Optional<ModeloCarro> findById(Long id) {
+        return modeloCarroRepository.findById(id);
+    }
+
+    public ModeloCarro update(Long id, ModeloCarro modeloCarro) {
+        Optional<ModeloCarro> existingModeloCarro = modeloCarroRepository.findById(id);
+
+        if (existingModeloCarro.isPresent()) {
+            modeloCarro.setId(id);
+            return modeloCarroRepository.save(modeloCarro);
+        } else {
+            return null;
+        }
+    }
+
+    public void delete(Long id) {
+        modeloCarroRepository.deleteById(id);
     }
 }
