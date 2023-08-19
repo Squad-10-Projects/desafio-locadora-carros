@@ -16,10 +16,6 @@ public class Fabricante implements Serializable {
     private Long id;
     private String nome;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "fabricante", cascade = CascadeType.ALL)
-    private List<ModeloCarro> modelosCarro = new ArrayList<>();
-
     public Fabricante() {
 
     }
@@ -45,7 +41,5 @@ public class Fabricante implements Serializable {
         this.nome = nome;
     }
 
-    public List<ModeloCarro> getModelosCarro() { return modelosCarro; }
 
-    public void setModelosCarro(List<ModeloCarro> modelosCarro) { this.modelosCarro = modelosCarro; }
 }

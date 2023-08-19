@@ -17,11 +17,11 @@ public class PessoaService {
         return pessoaRepository.save(pessoa);
     }
 
-    public List<Pessoa> getPessoas() {
+    public List<Pessoa> verPessoas() {
         return pessoaRepository.findAll();
     }
 
-    public Optional<Pessoa> getPessoa(Long id) {
+    public Optional<Pessoa> verPessoa(Long id) {
         return pessoaRepository.findById(id);
     }
     public Pessoa atualizarPessoa(Long id, Pessoa novaPessoa) {

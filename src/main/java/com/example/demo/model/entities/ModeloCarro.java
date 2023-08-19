@@ -1,13 +1,14 @@
 package com.example.demo.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 @Table(name = "tb_modelo_carro")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ModeloCarro implements Serializable {
 
     @Id
@@ -19,23 +20,20 @@ public class ModeloCarro implements Serializable {
     @Column(name = "categoria")
     private Categoria categoria;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "fabricante_id")
     private Fabricante fabricante;
-
-    @OneToMany(mappedBy = "modeloCarro", cascade = CascadeType.ALL)
-    private List<Carro> carros = new ArrayList<>();
 
     public ModeloCarro() {
 
     }
 
-    public ModeloCarro(Long id, String descricao, Categoria categoria, Fabricante fabricante) {
+    public ModeloCarro(Long id, String descricao, Categoria categoria, Long fabricante_id) {
         this.id = id;
         this.descricao = descricao;
         this.categoria = categoria;
-        this.fabricante = fabricante;
+        this.fabricante = new Fabricante();
+        this.fabricante.setId(fabricante_id);
     }
 
     public Long getId() {
@@ -62,11 +60,10 @@ public class ModeloCarro implements Serializable {
         this.categoria = categoria;
     }
 
-    public Fabricante getFabricante() { return fabricante; }
+    public Fabricante getFabricante() {
+        return fabricante;
+    }
 
     public void setFabricante(Fabricante fabricante) { this.fabricante = fabricante; }
 
-    public List<Carro> getCarros() { return carros; }
-
-    public void setCarros(List<Carro> carros) { this.carros = carros; }
 }

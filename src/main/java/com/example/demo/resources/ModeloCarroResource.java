@@ -1,5 +1,6 @@
 package com.example.demo.resources;
 
+import com.example.demo.model.dto.ModeloCarroDTO;
 import com.example.demo.model.entities.ModeloCarro;
 import com.example.demo.services.ModeloCarroService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +20,16 @@ public class ModeloCarroResource {
     private ModeloCarroService modeloCarroService;
 
     @GetMapping
-    public ResponseEntity<List<ModeloCarro>> getAllModelosCarros() {
+    public ResponseEntity<List<ModeloCarroDTO>> getAllModelosCarros() {
         List<ModeloCarro> modelosCarros = modeloCarroService.findAll();
-        return ResponseEntity.ok(modelosCarros);
+
+        List<ModeloCarroDTO> modelosCarrosDTO = new ArrayList<>();
+        for (ModeloCarro modeloCarro : modelosCarros) {
+            modelosCarrosDTO.add(modeloCarroService.toDTO(modeloCarro));
+        }
+
+        return ResponseEntity.ok(modelosCarrosDTO);
+
     }
 
     @PostMapping
@@ -33,7 +42,8 @@ public class ModeloCarroResource {
     public ResponseEntity<?> getModeloCarroById(@PathVariable Long id) {
         Optional<ModeloCarro> modeloCarro = modeloCarroService.findById(id);
         if (modeloCarro.isPresent()) {
-            return ResponseEntity.ok(modeloCarro.get());
+            ModeloCarroDTO modeloCarroDTO = modeloCarroService.toDTO(modeloCarro.get());
+            return ResponseEntity.ok(modeloCarroDTO);
         } else {
             return ResponseEntity.notFound().build();
         }
