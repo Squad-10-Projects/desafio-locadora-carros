@@ -1,5 +1,8 @@
 package com.example.demo.model.entities;
 
+import com.example.demo.model.dto.CarroDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -9,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tb_carro")
-public class Carro implements Serializable {
+public class Carro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +43,14 @@ public class Carro implements Serializable {
         this.chassi = chassi;
         this.cor = cor;
         this.valorDiaria = valorDiaria;
+        this.modeloCarro = modeloCarro;
+    }
+
+    public Carro(CarroDTO dto, ModeloCarro modeloCarro) {
+        this.placa = dto.getPlaca();
+        this.chassi = dto.getChassi();
+        this.cor = dto.getCor();
+        this.valorDiaria = dto.getValorDiaria();
         this.modeloCarro = modeloCarro;
     }
 

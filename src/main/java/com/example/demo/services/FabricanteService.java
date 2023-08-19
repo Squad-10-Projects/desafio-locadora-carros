@@ -1,43 +1,58 @@
 package com.example.demo.services;
 
+import com.example.demo.mappers.FabricanteMapper;
+import com.example.demo.model.dto.FabricanteDTO;
 import com.example.demo.model.entities.Fabricante;
 import com.example.demo.repositories.FabricanteRepository;
+import com.example.demo.services.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 public class FabricanteService {
 
     @Autowired
-    private FabricanteRepository fabricanteRepository;
+    private FabricanteRepository repository;
+    @Autowired
+    private FabricanteMapper mapper;
 
-    public List<Fabricante> findAll() {
-        return fabricanteRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<FabricanteDTO> obterTodos() {
+        List<Fabricante> fabricantes = this.repository.findAll();
+        return fabricantes.stream().map(this.mapper::modelToDTO).toList();
     }
 
-    public Fabricante create(Fabricante fabricante) {
-        return fabricanteRepository.save(fabricante);
+    @Transactional(readOnly = true)
+    public FabricanteDTO obterPorId(Long id) {
+        return this.mapper.modelToDTO(this.repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Fabricante não encontrado")));
     }
 
-    public Optional<Fabricante> findById(Long id) {
-        return fabricanteRepository.findById(id);
+    public FabricanteDTO salvar(FabricanteDTO dto) {
+        Fabricante fabricante = mapper.dtoToModel(dto);
+        fabricante = repository.save(fabricante);
+        return mapper.modelToDTO(fabricante);
     }
 
-    public Fabricante update(Long id, Fabricante fabricante) {
-        Optional<Fabricante> existingFabricante = fabricanteRepository.findById(id);
-
-        if (existingFabricante.isPresent()) {
-            fabricante.setId(id);
-            return fabricanteRepository.save(fabricante);
-        } else {
-            return null;
-        }
+    public Fabricante findById(Long fabricanteId) {
+        return repository.findById(fabricanteId).orElse(null);
     }
 
-    public void delete(Long id) {
-        fabricanteRepository.deleteById(id);
+    public FabricanteDTO atualizar(Long id, FabricanteDTO fabricanteDTO) {
+        Fabricante fabricante = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Carro não encontrado"));
+        Fabricante fabricanteAtualizado = mapper.dtoToModel(fabricanteDTO);
+        fabricanteAtualizado.setId(fabricante.getId());
+        fabricanteAtualizado = repository.save(fabricanteAtualizado);
+        return mapper.modelToDTO(fabricanteAtualizado);
+    }
+
+    public void deletarPorId(Long id) {
+        Fabricante fabricante = repository.findById(id) .orElseThrow(() -> new EntityNotFoundException("Fabricante não encontrado"));
+        repository.delete(fabricante);
     }
 }

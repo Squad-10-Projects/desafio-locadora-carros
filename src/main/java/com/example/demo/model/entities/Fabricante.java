@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_fabricante")
-public class Fabricante implements Serializable {
+public class Fabricante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +40,5 @@ public class Fabricante implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
-
 
 }

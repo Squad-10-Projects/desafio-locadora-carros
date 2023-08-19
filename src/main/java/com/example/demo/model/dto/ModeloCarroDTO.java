@@ -1,12 +1,30 @@
 package com.example.demo.model.dto;
 
+import com.example.demo.model.entities.Carro;
 import com.example.demo.model.entities.Categoria;
+import com.example.demo.model.entities.Fabricante;
+import com.example.demo.model.entities.ModeloCarro;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModeloCarroDTO {
+
     private Long id;
     private String descricao;
     private Categoria categoria;
-    private Long fabricante;
+    private Long fabricanteId;
+    public ModeloCarroDTO() {
+
+    }
+
+    public ModeloCarroDTO(ModeloCarro entity) {
+        this.id = entity.getId();
+        this.descricao = entity.getDescricao();
+        this.categoria = entity.getCategoria();
+        this.fabricanteId = entity.getFabricante().getId();
+    }
 
     public Long getId() {
         return id;
@@ -32,11 +50,7 @@ public class ModeloCarroDTO {
         this.categoria = categoria;
     }
 
-    public Long getFabricante() {
-        return fabricante;
-    }
+    public Long getFabricanteId() { return fabricanteId; }
 
-    public void setFabricante(Long fabricante) {
-        this.fabricante = fabricante;
-    }
+    public void setFabricanteId(Long fabricanteId) { this.fabricanteId = fabricanteId; }
 }
