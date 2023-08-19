@@ -1,41 +1,57 @@
 package com.example.demo.model.entities;
 
-import com.example.demo.model.dto.ModeloCarroDTO;
+import com.example.demo.model.dto.CarroDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "tb_modelo_carro")
-public class ModeloCarro {
+@Table(name = "tb_carro")
+public class Carro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String descricao;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "categoria")
-    private Categoria categoria;
+    private String placa;
+    private String chassi;
+    private String cor;
+    private BigDecimal valorDiaria;
 
     @ManyToOne
-    @JoinColumn(name = "fabricante_id")
-    private Fabricante fabricante;
+    @JoinColumn(name = "modelo_carro_id")
+    private ModeloCarro modeloCarro;
 
-    public ModeloCarro() {
+    @ManyToMany
+    @JoinTable(
+            name = "tb_carro_acessorio",
+            joinColumns = @JoinColumn(name = "carro_id"),
+            inverseJoinColumns = @JoinColumn(name = "acessorio_id")
+    )
+    private Set<Acessorio> acessorios = new HashSet<>();
+
+    public Carro() {
 
     }
-
-    public ModeloCarro(Long id, String descricao, Categoria categoria, Fabricante fabricante) {
+    public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modeloCarro) {
         this.id = id;
-        this.descricao = descricao;
-        this.categoria = categoria;
-        this.fabricante = fabricante;
+        this.placa = placa;
+        this.chassi = chassi;
+        this.cor = cor;
+        this.valorDiaria = valorDiaria;
+        this.modeloCarro = modeloCarro;
     }
 
-    public ModeloCarro(ModeloCarroDTO dto, Fabricante fabricante){
-        this.descricao = dto.getDescricao();
-        this.categoria = dto.getCategoria();
-        this.fabricante = fabricante;
+    public Carro(CarroDTO dto, ModeloCarro modeloCarro) {
+        this.placa = dto.getPlaca();
+        this.chassi = dto.getChassi();
+        this.cor = dto.getCor();
+        this.valorDiaria = dto.getValorDiaria();
+        this.modeloCarro = modeloCarro;
     }
 
     public Long getId() {
@@ -46,24 +62,43 @@ public class ModeloCarro {
         this.id = id;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getPlaca() {
+        return placa;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public String getChassi() {
+        return chassi;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setChassi(String chassi) {
+        this.chassi = chassi;
     }
 
-    public Fabricante getFabricante() { return fabricante; }
+    public String getCor() {
+        return cor;
+    }
 
-    public void setFabricante(Fabricante fabricante) { this.fabricante = fabricante; }
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
 
+    public BigDecimal getValorDiaria() {
+        return valorDiaria;
+    }
+
+    public void setValorDiaria(BigDecimal valorDiaria) {
+        this.valorDiaria = valorDiaria;
+    }
+
+    public ModeloCarro getModeloCarro() { return modeloCarro; }
+
+    public void setModeloCarro(ModeloCarro modeloCarro) { this.modeloCarro = modeloCarro; }
+
+    public Set<Acessorio> getAcessorios() { return acessorios; }
+
+    public void setAcessorios(Set<Acessorio> acessorios) { this.acessorios = acessorios; }
 }
