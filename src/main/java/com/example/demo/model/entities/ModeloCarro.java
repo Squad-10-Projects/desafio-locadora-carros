@@ -1,14 +1,12 @@
 package com.example.demo.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.demo.model.dto.ModeloCarroDTO;
 import jakarta.persistence.*;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 @Table(name = "tb_modelo_carro")
-public class ModeloCarro implements Serializable {
+public class ModeloCarro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,13 +17,9 @@ public class ModeloCarro implements Serializable {
     @Column(name = "categoria")
     private Categoria categoria;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "fabricante_id")
     private Fabricante fabricante;
-
-    @OneToMany(mappedBy = "modeloCarro", cascade = CascadeType.ALL)
-    private List<Carro> carros = new ArrayList<>();
 
     public ModeloCarro() {
 
@@ -35,6 +29,12 @@ public class ModeloCarro implements Serializable {
         this.id = id;
         this.descricao = descricao;
         this.categoria = categoria;
+        this.fabricante = fabricante;
+    }
+
+    public ModeloCarro(ModeloCarroDTO dto, Fabricante fabricante){
+        this.descricao = dto.getDescricao();
+        this.categoria = dto.getCategoria();
         this.fabricante = fabricante;
     }
 
@@ -66,7 +66,4 @@ public class ModeloCarro implements Serializable {
 
     public void setFabricante(Fabricante fabricante) { this.fabricante = fabricante; }
 
-    public List<Carro> getCarros() { return carros; }
-
-    public void setCarros(List<Carro> carros) { this.carros = carros; }
 }

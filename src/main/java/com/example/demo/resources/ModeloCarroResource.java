@@ -1,7 +1,13 @@
 package com.example.demo.resources;
 
+import com.example.demo.mappers.ModeloCarroMapper;
+import com.example.demo.model.dto.FabricanteDTO;
+import com.example.demo.model.dto.ModeloCarroDTO;
+import com.example.demo.model.entities.Fabricante;
 import com.example.demo.model.entities.ModeloCarro;
+import com.example.demo.repositories.FabricanteRepository;
 import com.example.demo.services.ModeloCarroService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,43 +21,36 @@ import java.util.Optional;
 public class ModeloCarroResource {
 
     @Autowired
-    private ModeloCarroService modeloCarroService;
+    private ModeloCarroService service;
 
     @GetMapping
-    public ResponseEntity<List<ModeloCarro>> getAllModelosCarros() {
-        List<ModeloCarro> modelosCarros = modeloCarroService.findAll();
-        return ResponseEntity.ok(modelosCarros);
-    }
-
-    @PostMapping
-    public ResponseEntity<ModeloCarro> createModeloCarro(@RequestBody ModeloCarro modeloCarro) {
-        ModeloCarro createdModeloCarro = modeloCarroService.create(modeloCarro);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdModeloCarro);
+    public ResponseEntity<List<ModeloCarroDTO>> obterTodos() {
+        List<ModeloCarroDTO> modelos = service.obterTodos();
+        return ResponseEntity.ok(modelos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getModeloCarroById(@PathVariable Long id) {
-        Optional<ModeloCarro> modeloCarro = modeloCarroService.findById(id);
-        if (modeloCarro.isPresent()) {
-            return ResponseEntity.ok(modeloCarro.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ModeloCarroDTO> obterPorId(@PathVariable Long id) {
+        ModeloCarroDTO modelosDTO = service.obterPorId(id);
+        return ResponseEntity.ok(modelosDTO);
+    }
+
+    @PostMapping
+    public ResponseEntity<ModeloCarroDTO> salvar(@RequestBody ModeloCarroDTO dto) {
+        ModeloCarroDTO modeloDTO = service.salvar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(modeloDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ModeloCarro> updateModeloCarro(@PathVariable Long id, @RequestBody ModeloCarro modeloCarro) {
-        ModeloCarro updatedModeloCarro = modeloCarroService.update(id, modeloCarro);
-        if (updatedModeloCarro != null) {
-            return ResponseEntity.ok(updatedModeloCarro);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ModeloCarroDTO> atualizar(@PathVariable Long id, @RequestBody ModeloCarroDTO modeloDTO) {
+        ModeloCarroDTO dto = service.atualizar(id, modeloDTO);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteModeloCarro(@PathVariable Long id) {
-        modeloCarroService.delete(id);
+    public ResponseEntity<Void> deletarPorId(@PathVariable Long id) {
+        service.deletarPorId(id);
         return ResponseEntity.noContent().build();
     }
+
 }
