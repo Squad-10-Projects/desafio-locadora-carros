@@ -1,8 +1,8 @@
 package com.example.demo.repositories;
 
-import com.example.demo.model.entities.Pessoa;
+import com.example.demo.model.entities.Motorista;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
+public interface MotoristaRepository extends JpaRepository<Motorista, Long> {
     boolean existsByEmail(String email);
 }

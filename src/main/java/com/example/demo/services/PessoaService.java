@@ -14,14 +14,17 @@ public class PessoaService {
     private PessoaRepository pessoaRepository;
 
     public Pessoa adicionaPessoa(Pessoa pessoa) {
+        if (pessoaRepository.existsByEmail(pessoa.getEmail())) {
+            throw new IllegalArgumentException("Já existe uma pessoa vinculada a esse email!");
+        }
         return pessoaRepository.save(pessoa);
     }
 
-    public List<Pessoa> getPessoas() {
+    public List<Pessoa> verPessoas() {
         return pessoaRepository.findAll();
     }
 
-    public Optional<Pessoa> getPessoa(Long id) {
+    public Optional<Pessoa> verPessoa(Long id) {
         return pessoaRepository.findById(id);
     }
     public Pessoa atualizarPessoa(Long id, Pessoa novaPessoa) {
@@ -40,5 +43,9 @@ public class PessoaService {
 
     public void excluirPessoa(Long id) {
         pessoaRepository.deleteById(id);
+    }
+
+    public boolean existePessoaComEmail(String email) {
+        return pessoaRepository.existsByEmail(email);
     }
 }

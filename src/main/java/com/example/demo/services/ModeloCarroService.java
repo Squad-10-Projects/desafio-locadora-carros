@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.model.dto.ModeloCarroDTO;
 import com.example.demo.model.entities.ModeloCarro;
 import com.example.demo.repositories.ModeloCarroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,14 @@ public class ModeloCarroService {
 
     public void delete(Long id) {
         modeloCarroRepository.deleteById(id);
+    }
+
+    public ModeloCarroDTO toDTO(ModeloCarro modeloCarro) {
+        ModeloCarroDTO dto = new ModeloCarroDTO();
+        dto.setId(modeloCarro.getId());
+        dto.setDescricao(modeloCarro.getDescricao());
+        dto.setCategoria(modeloCarro.getCategoria());
+        dto.setFabricante(modeloCarro.getFabricante().getId());
+        return dto;
     }
 }
