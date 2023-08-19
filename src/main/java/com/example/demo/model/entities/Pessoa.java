@@ -1,6 +1,7 @@
 package com.example.demo.model.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,18 +16,26 @@ public class Pessoa implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     private String nome;
+    private String email;
     private Date dataNascimento;
     private String cpf;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="sexo")
+    @NotNull
+    private Sexo sexo;
 
     public Pessoa() {
 
     }
 
-    public Pessoa(Long id, String nome, Date dataNascimento, String cpf) {
+    public Pessoa(Long id, String nome, String email, Date dataNascimento, String cpf, Sexo sexo) {
         this.id = id;
         this.nome = nome;
+        this.email = email;
         this.dataNascimento = dataNascimento;
         this.cpf = cpf;
+        this.sexo = sexo;
     }
 
     public Long getId() {
@@ -45,6 +54,14 @@ public class Pessoa implements Serializable {
         this.nome = nome;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Date getDataNascimento() {
         return dataNascimento;
     }
@@ -59,5 +76,13 @@ public class Pessoa implements Serializable {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public Sexo getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
     }
 }

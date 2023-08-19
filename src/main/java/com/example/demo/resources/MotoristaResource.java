@@ -23,8 +23,11 @@ public class MotoristaResource {
         this.motoristaRepository = motoristaRepository;
     }
 
-    @PostMapping("/motorista")
-    public ResponseEntity<Motorista> adicionaMotorista(@RequestBody Motorista motorista) {
+    @PostMapping("/motorista/cadastro")
+    public ResponseEntity<?> adicionaMotorista(@RequestBody Motorista motorista) {
+        if (motoristaService.existeMotoristaComEmail(motorista.getEmail())) {
+            return  new ResponseEntity<>("Email duplicado!", HttpStatus.IM_USED);
+        }
         return new ResponseEntity<Motorista>(motoristaService.adicionaMotorista(motorista), HttpStatus.CREATED);
     }
 

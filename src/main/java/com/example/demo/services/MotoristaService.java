@@ -16,6 +16,9 @@ public class MotoristaService {
     private MotoristaRepository motoristaRepository;
 
     public Motorista adicionaMotorista(Motorista motorista) {
+        if(motoristaRepository.existsByEmail(motorista.getEmail())) {
+            throw new IllegalArgumentException("Email já cadastrado no sistema!");
+        }
         return motoristaRepository.save(motorista);
     }
 
@@ -46,5 +49,9 @@ public class MotoristaService {
 
     public void excluirMotorista(Long id) {
         motoristaRepository.deleteById(id);
+    }
+
+    public boolean existeMotoristaComEmail(String email) {
+        return motoristaRepository.existsByEmail(email);
     }
 }

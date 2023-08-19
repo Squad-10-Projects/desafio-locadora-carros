@@ -17,8 +17,11 @@ public class PessoaResource {
             this.pessoaService = pessoaService;
         }
 
-        @PostMapping("/pessoas")
-        public ResponseEntity<Pessoa> adiconaPessoa(@RequestBody Pessoa pessoa ) {
+        @PostMapping("/pessoa")
+        public ResponseEntity<?> adiconaPessoa(@RequestBody Pessoa pessoa ) {
+            if (pessoaService.existePessoaComEmail(pessoa.getEmail())) {
+                return new ResponseEntity<>("Email duplicado!", HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<Pessoa>(pessoaService.adicionaPessoa(pessoa), HttpStatus.CREATED);
         }
 

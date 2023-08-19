@@ -66,4 +66,6 @@ public class ModeloCarro implements Serializable {
 
     public void setFabricante(Fabricante fabricante) { this.fabricante = fabricante; }
 
+
+
 }
