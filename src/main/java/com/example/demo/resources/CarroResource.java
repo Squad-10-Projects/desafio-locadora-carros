@@ -2,7 +2,6 @@ package com.example.demo.resources;
 
 import com.example.demo.model.dto.CarroDTO;
 import com.example.demo.services.CarroService;
-import com.example.demo.services.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +20,11 @@ public class CarroResource {
     public ResponseEntity<List<CarroDTO>> obterTodos() {
         List<CarroDTO> carros = service.obterTodos();
         return ResponseEntity.ok(carros);
+    }
+
+    @GetMapping("/disponiveis")
+    public List<CarroDTO> listarVeiculosDisponiveis() {
+        return service.listarVeiculosDisponiveis();
     }
 
     @GetMapping("/{id}")

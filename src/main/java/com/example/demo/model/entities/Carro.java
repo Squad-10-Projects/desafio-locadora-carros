@@ -1,11 +1,9 @@
 package com.example.demo.model.entities;
 
 import com.example.demo.model.dto.CarroDTO;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,12 +19,14 @@ public class Carro {
     private String chassi;
     private String cor;
     private BigDecimal valorDiaria;
+    private Boolean alugado;
 
     @ManyToOne
     @JoinColumn(name = "modelo_carro_id")
     private ModeloCarro modeloCarro;
 
-    @ManyToMany
+    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "tb_carro_acessorio",
             joinColumns = @JoinColumn(name = "carro_id"),
@@ -37,13 +37,14 @@ public class Carro {
     public Carro() {
 
     }
-    public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modeloCarro) {
+    public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modeloCarro, Boolean alugado) {
         this.id = id;
         this.placa = placa;
         this.chassi = chassi;
         this.cor = cor;
         this.valorDiaria = valorDiaria;
         this.modeloCarro = modeloCarro;
+        this.alugado = false;
     }
 
     public Carro(CarroDTO dto, ModeloCarro modeloCarro) {
@@ -52,6 +53,7 @@ public class Carro {
         this.cor = dto.getCor();
         this.valorDiaria = dto.getValorDiaria();
         this.modeloCarro = modeloCarro;
+        this.alugado = false;
     }
 
     public Long getId() {
@@ -101,4 +103,8 @@ public class Carro {
     public Set<Acessorio> getAcessorios() { return acessorios; }
 
     public void setAcessorios(Set<Acessorio> acessorios) { this.acessorios = acessorios; }
+
+    public Boolean getAlugado() { return alugado; }
+
+    public void setAlugado(Boolean alugado) { this.alugado = alugado; }
 }

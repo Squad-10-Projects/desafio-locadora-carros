@@ -1,16 +1,12 @@
 package com.example.demo.resources;
 
-import com.example.demo.model.entities.Acessorio;
-import com.example.demo.model.entities.Carro;
+import com.example.demo.model.dto.AcessorioDTO;
 import com.example.demo.services.AcessorioService;
-import com.example.demo.services.CarroService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,8 +17,32 @@ public class AcessorioResource {
     private AcessorioService service;
 
     @GetMapping
-    public ResponseEntity<List<Acessorio>> findAll() {
-        List<Acessorio> list = service.findAll();
-        return ResponseEntity.ok().body(list);
+    public ResponseEntity<List<AcessorioDTO>> obterTodos() {
+        List<AcessorioDTO> acessorios = service.obterTodos();
+        return ResponseEntity.ok(acessorios);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AcessorioDTO> obterPorId(@PathVariable Long id) {
+        AcessorioDTO acessorioDTO = service.obterPorId(id);
+        return ResponseEntity.ok(acessorioDTO);
+    }
+
+    @PostMapping
+    public ResponseEntity<AcessorioDTO> salvar(@RequestBody AcessorioDTO dto) {
+        AcessorioDTO acessorioDTO = service.salvar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(acessorioDTO);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AcessorioDTO> atualizar(@PathVariable Long id, @RequestBody AcessorioDTO acessorioDTO) {
+        AcessorioDTO dto = service.atualizar(id, acessorioDTO);
+        return ResponseEntity.ok(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarPorId(@PathVariable Long id) {
+        service.deletarPorId(id);
+        return ResponseEntity.noContent().build();
     }
 }
