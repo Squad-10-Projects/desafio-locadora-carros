@@ -1,57 +1,47 @@
 package com.example.demo.model.entities;
 
-import com.example.demo.model.dto.CarroDTO;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.example.demo.mappers.ModeloCarroMapper;
+import com.example.demo.model.dto.ModeloCarroDTO;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
-@Table(name = "tb_carro")
-public class Carro {
+@Table(name = "tb_modelo_carro")
+public class ModeloCarro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String placa;
-    private String chassi;
-    private String cor;
-    private BigDecimal valorDiaria;
+    private String descricao;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categoria")
+    private Categoria categoria;
 
     @ManyToOne
-    @JoinColumn(name = "modelo_carro_id")
-    private ModeloCarro modeloCarro;
+    @JoinColumn(name = "fabricante_id")
+    private Fabricante fabricante;
 
-    @ManyToMany
-    @JoinTable(
-            name = "tb_carro_acessorio",
-            joinColumns = @JoinColumn(name = "carro_id"),
-            inverseJoinColumns = @JoinColumn(name = "acessorio_id")
-    )
-    private Set<Acessorio> acessorios = new HashSet<>();
-
-    public Carro() {
+    public ModeloCarro() {
 
     }
-    public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modeloCarro) {
+
+    public ModeloCarro(Long id, String descricao, Categoria categoria, Long fabricante_id) {
         this.id = id;
-        this.placa = placa;
-        this.chassi = chassi;
-        this.cor = cor;
-        this.valorDiaria = valorDiaria;
-        this.modeloCarro = modeloCarro;
+        this.descricao = descricao;
+        this.categoria = categoria;
+        this.fabricante = new Fabricante();
+        this.fabricante.setId(fabricante_id);
     }
 
-    public Carro(CarroDTO dto, ModeloCarro modeloCarro) {
-        this.placa = dto.getPlaca();
-        this.chassi = dto.getChassi();
-        this.cor = dto.getCor();
-        this.valorDiaria = dto.getValorDiaria();
-        this.modeloCarro = modeloCarro;
+    public ModeloCarro(ModeloCarroDTO dto, Fabricante fabricante){
+        this.id = dto.getId();
+        this.descricao = dto.getDescricao();
+        this.categoria = dto.getCategoria();
+        this.fabricante = fabricante;
     }
 
     public Long getId() {
@@ -62,43 +52,26 @@ public class Carro {
         this.id = id;
     }
 
-    public String getPlaca() {
-        return placa;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setPlaca(String placa) {
-        this.placa = placa;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public String getChassi() {
-        return chassi;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setChassi(String chassi) {
-        this.chassi = chassi;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
-    public String getCor() {
-        return cor;
+    public Fabricante getFabricante() {
+        return fabricante;
     }
 
-    public void setCor(String cor) {
-        this.cor = cor;
-    }
+    public void setFabricante(Fabricante fabricante) { this.fabricante = fabricante; }
 
-    public BigDecimal getValorDiaria() {
-        return valorDiaria;
-    }
-
-    public void setValorDiaria(BigDecimal valorDiaria) {
-        this.valorDiaria = valorDiaria;
-    }
-
-    public ModeloCarro getModeloCarro() { return modeloCarro; }
-
-    public void setModeloCarro(ModeloCarro modeloCarro) { this.modeloCarro = modeloCarro; }
-
-    public Set<Acessorio> getAcessorios() { return acessorios; }
-
-    public void setAcessorios(Set<Acessorio> acessorios) { this.acessorios = acessorios; }
 }
