@@ -37,6 +37,7 @@ public class Carro {
     public Carro() {
 
     }
+
     public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modeloCarro, Boolean alugado) {
         this.id = id;
         this.placa = placa;
@@ -54,6 +55,10 @@ public class Carro {
         this.valorDiaria = dto.getValorDiaria();
         this.modeloCarro = modeloCarro;
         this.alugado = false;
+    }
+
+    public Carro() {
+
     }
 
     public Long getId() {

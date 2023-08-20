@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/carrinho")
@@ -21,14 +22,20 @@ public class CarrinhoResource {
     @Autowired
     private CarrinhoService service;
 
-    @PostMapping("/adicionar/{carroId}")
-    public ResponseEntity<String> adicionarAoCarrinho(@PathVariable Long carroId) {
+    @PostMapping("/adicionar")
+    public ResponseEntity<String> adicionarAoCarrinho(@RequestBody Map<String, Object> requestBody) {
+        Long carroId = Long.valueOf(requestBody.get("carroId").toString());
         Carro carro = carroRepository.findById(carroId)
                 .orElseThrow(() -> new EntityNotFoundException("Carro não encontrado"));
-
         carrinho.adicionarCarro(carro);
 
         return ResponseEntity.ok("Carro adicionado ao carrinho");
+    }
+
+    @DeleteMapping("/remover/{carroIndex}")
+    public ResponseEntity<String> removerDoCarrinho(@PathVariable int carroIndex) {
+        service.removerCarroDoCarrinho(carroIndex);
+        return ResponseEntity.ok("Carro removido do carrinho");
     }
 
     @GetMapping("/carros")
@@ -36,5 +43,12 @@ public class CarrinhoResource {
         List<Carro> carrosNoCarrinho = service.listarCarrosNoCarrinho();
         return ResponseEntity.ok(carrosNoCarrinho);
     }
+
+    @DeleteMapping("/limpar")
+    public ResponseEntity<String> limparCarrinho() {
+        carrinho.limparCarrinho();
+        return ResponseEntity.ok("Carrinho foi limpo");
+    }
+
 
 }

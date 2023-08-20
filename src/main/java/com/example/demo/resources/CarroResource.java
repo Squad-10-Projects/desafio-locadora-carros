@@ -1,6 +1,7 @@
 package com.example.demo.resources;
 
 import com.example.demo.model.dto.CarroDTO;
+import com.example.demo.model.entities.Categoria;
 import com.example.demo.services.CarroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,5 +50,28 @@ public class CarroResource {
     public ResponseEntity<Void> deletarPorId(@PathVariable Long id) {
         service.deletarPorId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/filtrar/acessorio/{id}")
+    public ResponseEntity<List<CarroDTO>> filtrarPorAcessorio(@PathVariable Long id) {
+        List<CarroDTO> carrosFiltrados = service.filtrarPorAcessorio(id);
+        return ResponseEntity.ok(carrosFiltrados);
+    }
+
+    @GetMapping("/filtrar/modelo/{id}")
+    public ResponseEntity<List<CarroDTO>> filtrarPorModelo(@PathVariable Long modeloCarroId) {
+        List<CarroDTO> carrosFiltrados = service.filtrarPorModelo(modeloCarroId);
+        return ResponseEntity.ok(carrosFiltrados);
+    }
+
+    @GetMapping("/filtrar/categoria/{categoria}")
+    public ResponseEntity<List<CarroDTO>> filtrarCarrosPorCategoria(@PathVariable String categoria) {
+        try {
+            Categoria categoriaEnum = Categoria.valueOf(categoria);
+            List<CarroDTO> carrosFiltrados = service.filtrarPorCategoria(categoriaEnum);
+            return ResponseEntity.ok(carrosFiltrados);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

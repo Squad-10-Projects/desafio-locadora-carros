@@ -18,4 +18,7 @@ public class CarrinhoService {
         return carrosNoCarrinho;
     }
 
+    public void removerCarroDoCarrinho(int index) {
+        carrinho.removerCarro(index);
+    }
 }

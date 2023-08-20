@@ -1,12 +1,7 @@
 package com.example.demo.model.entities;
 
-import com.example.demo.mappers.ModeloCarroMapper;
 import com.example.demo.model.dto.ModeloCarroDTO;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import java.io.Serializable;
-
 
 @Entity
 @Table(name = "tb_modelo_carro")
