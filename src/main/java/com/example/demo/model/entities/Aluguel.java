@@ -30,7 +30,7 @@ public class Aluguel implements Serializable  {
     private BigDecimal valorTotal;
     private int quantidadeDias;
 
-    public Aluguel(LocalDate dataPedido, LocalDate dataEntrega, Calendar dataDevolucao, BigDecimal valorTotal, int quantidadeDias){
+    public Aluguel(LocalDate dataPedido, LocalDate dataEntrega, LocalDate dataDevolucao, BigDecimal valorTotal, int quantidadeDias){
         this.dataPedido = dataPedido;
         this.dataEntrega = dataEntrega;
         this.dataDevolucao = dataDevolucao;
@@ -111,11 +111,11 @@ public class Aluguel implements Serializable  {
         this.dataEntrega = dataEntrega;
     }
 
-    public Calendar getDataDevolucao() {
+    public LocalDate getDataDevolucao() {
         return dataDevolucao;
     }
 
-    public void setDataDevolucao(Calendar dataDevolucao) {
+    public void setDataDevolucao(LocalDate dataDevolucao) {
         this.dataDevolucao = dataDevolucao;
     }
 
