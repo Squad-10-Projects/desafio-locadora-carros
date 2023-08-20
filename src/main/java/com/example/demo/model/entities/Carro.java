@@ -25,7 +25,6 @@ public class Carro {
     @JoinColumn(name = "modelo_carro_id")
     private ModeloCarro modeloCarro;
 
-
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -34,6 +33,10 @@ public class Carro {
             inverseJoinColumns = @JoinColumn(name = "acessorio_id")
     )
     private Set<Acessorio> acessorios = new HashSet<>();
+
+    public Carro() {
+
+    }
 
     public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modeloCarro, Boolean alugado) {
         this.id = id;
