@@ -2,10 +2,10 @@ package com.example.demo.services;
 
 import com.example.demo.mappers.CarroMapper;
 import com.example.demo.model.dto.CarroDTO;
-import com.example.demo.model.dto.ModeloCarroDTO;
+import com.example.demo.model.entities.Acessorio;
 import com.example.demo.model.entities.Carro;
-import com.example.demo.model.entities.Fabricante;
 import com.example.demo.model.entities.ModeloCarro;
+import com.example.demo.repositories.AcessorioRepository;
 import com.example.demo.repositories.CarroRepository;
 import com.example.demo.repositories.ModeloCarroRepository;
 import com.example.demo.services.exceptions.EntityNotFoundException;
@@ -26,6 +26,8 @@ public class CarroService {
     private CarroMapper mapper;
     @Autowired
     private ModeloCarroRepository modeloCarroRepository;
+    @Autowired
+    private AcessorioRepository acessorioRepository;
 
     @Transactional(readOnly = true)
     public List<CarroDTO> obterTodos() {
@@ -39,11 +41,23 @@ public class CarroService {
                 .orElseThrow(() -> new EntityNotFoundException("Carro não encontrado")));
     }
 
+    public List<CarroDTO> listarVeiculosDisponiveis() {
+        List<Carro> veiculosDisponiveis = repository.findByAlugadoFalse();
+        return mapper.listModelToListDto(veiculosDisponiveis);
+    }
+
     public CarroDTO salvar(CarroDTO dto) {
         ModeloCarro modeloCarro = modeloCarroRepository.findById(dto.getModeloCarroId())
                 .orElseThrow(() -> new EntityNotFoundException("Modelo não encontrado"));
 
         Carro carro = new Carro(dto, modeloCarro);
+        if (dto.getAcessoriosId() != null) {
+            for (Long acessoriosId : dto.getAcessoriosId()) {
+                Acessorio acessorio = acessorioRepository.findById(acessoriosId)
+                        .orElseThrow(() -> new EntityNotFoundException("Acessório não encontrado"));
+                carro.getAcessorios().add(acessorio);
+            }
+        }
         carro = repository.save(carro);
         return mapper.modelToDTO(carro);
     }
