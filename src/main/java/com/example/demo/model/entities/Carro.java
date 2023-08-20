@@ -113,5 +113,9 @@ public class Carro {
 
     public Boolean getDisponivel() { return disponivel; }
 
-    public void setDisponivel(Boolean alugado) { this.disponivel = disponivel; }
+    public void setDisponivel(Boolean disponivel) { this.disponivel = disponivel; }
+
+    public List<Aluguel> getAlugueis() { return alugueis; }
+
+    public void setAlugueis(List<Aluguel> alugueis) { this.alugueis = alugueis; }
 }

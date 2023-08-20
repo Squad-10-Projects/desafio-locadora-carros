@@ -39,10 +39,6 @@ public class FabricanteService {
         return mapper.modelToDTO(fabricante);
     }
 
-    public Fabricante findById(Long fabricanteId) {
-        return repository.findById(fabricanteId).orElse(null);
-    }
-
     public FabricanteDTO atualizar(Long id, FabricanteDTO fabricanteDTO) {
         Fabricante fabricante = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Carro não encontrado"));
         Fabricante fabricanteAtualizado = mapper.dtoToModel(fabricanteDTO);

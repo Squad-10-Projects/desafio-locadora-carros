@@ -14,7 +14,7 @@ public class CarroDTO {
     private BigDecimal valorDiaria;
     private Long modeloCarroId;
     private Long[] acessoriosId;
-    private Boolean alugado;
+    private Boolean disponivel;
 
     public CarroDTO() {
 
@@ -28,7 +28,7 @@ public class CarroDTO {
         this.valorDiaria = entity.getValorDiaria();
         this.modeloCarroId = entity.getModeloCarro().getId();
         this.acessoriosId = getAcessoriosIds(entity);
-        this.alugado = entity.getAlugado();
+        this.disponivel = entity.getDisponivel();
     }
 
     public Long[] getAcessoriosIds(Carro entity) {
@@ -90,7 +90,7 @@ public class CarroDTO {
         this.acessoriosId = acessoriosId;
     }
 
-    public Boolean getAlugado() { return alugado; }
+    public Boolean getDisponivel() { return disponivel; }
 
-    public void setAlugado(Boolean alugado) { this.alugado = alugado; }
+    public void setDisponivel(Boolean disponivel) { this.disponivel = disponivel; }
 }
