@@ -18,6 +18,14 @@ public class Carrinho {
         carrosSelecionados.add(carro);
     }
 
+    public void removerCarro(int index) {
+        if (index >= 0 && index < carrosSelecionados.size()) {
+            carrosSelecionados.remove(index);
+        } else {
+            throw new IndexOutOfBoundsException("Índice fora dos limites da lista");
+        }
+    }
+
     public List<Carro> getCarrosSelecionados() {
         return carrosSelecionados;
     }

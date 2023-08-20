@@ -4,6 +4,7 @@ import com.example.demo.mappers.CarroMapper;
 import com.example.demo.model.dto.CarroDTO;
 import com.example.demo.model.entities.Acessorio;
 import com.example.demo.model.entities.Carro;
+import com.example.demo.model.entities.Categoria;
 import com.example.demo.model.entities.ModeloCarro;
 import com.example.demo.repositories.AcessorioRepository;
 import com.example.demo.repositories.CarroRepository;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
@@ -44,6 +46,33 @@ public class CarroService {
     public List<CarroDTO> listarVeiculosDisponiveis() {
         List<Carro> veiculosDisponiveis = repository.findByAlugadoFalse();
         return mapper.listModelToListDto(veiculosDisponiveis);
+    }
+
+    public List<CarroDTO> filtrarPorAcessorio(Long idAcessorio) {
+        Acessorio acessorio = acessorioRepository.findById(idAcessorio)
+                .orElseThrow(() -> new EntityNotFoundException("Acessório não encontrado"));
+
+        List<Carro> carrosFiltrados = repository.findByAcessorios(acessorio);
+        return carrosFiltrados.stream()
+                .map(carro -> mapper.modelToDTO(carro))
+                .collect(Collectors.toList());
+    }
+
+    public List<CarroDTO> filtrarPorModelo(Long modeloCarroId) {
+        ModeloCarro modeloCarro = modeloCarroRepository.findById(modeloCarroId)
+                .orElseThrow(() -> new EntityNotFoundException("Modelo não encontrado"));
+
+        List<Carro> carrosPorModelo = repository.findByModeloCarro(modeloCarro);
+        return carrosPorModelo.stream()
+                .map(carro -> mapper.modelToDTO(carro))
+                .collect(Collectors.toList());
+    }
+
+    public List<CarroDTO> filtrarPorCategoria(Categoria categoria) {
+        List<Carro> carrosPorCategoria = repository.findByModeloCarroCategoria(categoria);
+        return carrosPorCategoria.stream()
+                .map(carro -> new CarroDTO(carro))
+                .collect(Collectors.toList());
     }
 
     public CarroDTO salvar(CarroDTO dto) {

@@ -6,9 +6,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
 
 @Entity
 @Table(name = "tb_carro")
@@ -37,10 +35,6 @@ public class Carro {
     )
     private Set<Acessorio> acessorios = new HashSet<>();
 
-    public Carro(List<Aluguel> alugueis) {
-
-        this.alugueis = alugueis;
-    }
     public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modeloCarro, Boolean alugado) {
         this.id = id;
         this.placa = placa;
@@ -58,6 +52,10 @@ public class Carro {
         this.valorDiaria = dto.getValorDiaria();
         this.modeloCarro = modeloCarro;
         this.alugado = false;
+    }
+
+    public Carro() {
+
     }
 
     public Long getId() {
