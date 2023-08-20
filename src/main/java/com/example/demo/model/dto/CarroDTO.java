@@ -2,13 +2,8 @@ package com.example.demo.model.dto;
 
 import com.example.demo.model.entities.Acessorio;
 import com.example.demo.model.entities.Carro;
-import com.example.demo.model.entities.ModeloCarro;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
 public class CarroDTO {
 
@@ -18,7 +13,8 @@ public class CarroDTO {
     private String cor;
     private BigDecimal valorDiaria;
     private Long modeloCarroId;
-    private Long[] acessoriosIds;
+    private Long[] acessoriosId;
+    private Boolean alugado;
 
     public CarroDTO() {
 
@@ -31,7 +27,16 @@ public class CarroDTO {
         this.cor = entity.getCor();
         this.valorDiaria = entity.getValorDiaria();
         this.modeloCarroId = entity.getModeloCarro().getId();
+        this.acessoriosId = getAcessoriosIds(entity);
+        this.alugado = entity.getAlugado();
     }
+
+    public Long[] getAcessoriosIds(Carro entity) {
+        return entity.getAcessorios().stream()
+                .map(Acessorio::getId)
+                .toArray(Long[]::new);
+    }
+
 
     public Long getId() {
         return id;
@@ -77,11 +82,15 @@ public class CarroDTO {
 
     public void setModeloCarroId(Long modeloCarroId) { this.modeloCarroId = modeloCarroId; }
 
-    public Long[] getAcessoriosIds() {
-        return acessoriosIds;
+    public Long[] getAcessoriosId() {
+        return acessoriosId;
     }
 
-    public void setAcessoriosIds(Long[] acessoriosIds) {
-        this.acessoriosIds = acessoriosIds;
+    public void setAcessoriosId(Long[] acessoriosId) {
+        this.acessoriosId = acessoriosId;
     }
+
+    public Boolean getAlugado() { return alugado; }
+
+    public void setAlugado(Boolean alugado) { this.alugado = alugado; }
 }

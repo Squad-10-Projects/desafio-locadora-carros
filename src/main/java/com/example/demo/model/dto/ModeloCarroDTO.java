@@ -1,13 +1,7 @@
 package com.example.demo.model.dto;
 
-import com.example.demo.model.entities.Carro;
 import com.example.demo.model.entities.Categoria;
-import com.example.demo.model.entities.Fabricante;
 import com.example.demo.model.entities.ModeloCarro;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ModeloCarroDTO {
 
