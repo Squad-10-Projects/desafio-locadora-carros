@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import com.example.demo.model.entities.Aluguel;
 
 @Entity
 @Table(name = "tb_carro")
@@ -33,6 +36,9 @@ public class Carro {
             inverseJoinColumns = @JoinColumn(name = "acessorio_id")
     )
     private Set<Acessorio> acessorios = new HashSet<>();
+
+    @OneToMany(mappedBy = "carro")
+    private List<Aluguel> alugueis; // Relação reversa
 
     public Carro() {
 

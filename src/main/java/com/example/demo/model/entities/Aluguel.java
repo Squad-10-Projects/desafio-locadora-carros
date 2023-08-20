@@ -19,21 +19,54 @@ public class Aluguel implements Serializable  {
     private LocalDate dataEntrega;
     private Calendar dataDevolucao;
     private BigDecimal valorTotal;
+    private int quantidadeDias;
 
-    public Aluguel(LocalDate dataPedido, LocalDate dataEntrega, Calendar dataDevolucao, BigDecimal valorTotal){
+    public Aluguel(LocalDate dataPedido, LocalDate dataEntrega, Calendar dataDevolucao, BigDecimal valorTotal, int quantidadeDias){
         this.dataPedido = dataPedido;
         this.dataEntrega = dataEntrega;
         this.dataDevolucao = dataDevolucao;
         this.valorTotal = valorTotal;
+        this.quantidadeDias = quantidadeDias;
     }
 
     public Aluguel() {
 
     }
+    @ManyToOne
+    @JoinColumn(name = "carro_id") // Nome da coluna de chave estrangeira na tabela de Aluguel
+    private Carro carro;
+
+    public int getQuantidadeDias() {
+        return quantidadeDias;
+    }
+
+    public Carro getCarro() {
+        return carro;
+    }
+
+    public void setCarro(Carro carro) {
+        this.carro = carro;
+    }
+
+    public void setQuantidadeDias(int quantidadeDias) {
+        this.quantidadeDias = quantidadeDias;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "apolice_id")
     private ApoliceSeguro apoliceSeguro;
+
+    @ManyToOne
+    @JoinColumn(name = "pessoa_id") // Nome da coluna que faz a relação com Pessoa
+    private Pessoa pessoa;
 
     public long getID() {
         return ID;

@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
+import com.example.demo.model.entities.Aluguel;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "tb_pessoa")
@@ -19,6 +22,9 @@ public class Pessoa implements Serializable {
     private String email;
     private Date dataNascimento;
     private String cpf;
+
+    @OneToMany(mappedBy = "pessoa")
+    private List<Aluguel> alugueis = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name="sexo")
