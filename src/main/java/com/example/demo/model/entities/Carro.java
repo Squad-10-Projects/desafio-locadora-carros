@@ -6,9 +6,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
 
 @Entity
 @Table(name = "tb_carro")
@@ -27,7 +25,6 @@ public class Carro {
     @JoinColumn(name = "modelo_carro_id")
     private ModeloCarro modeloCarro;
 
-
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -37,9 +34,8 @@ public class Carro {
     )
     private Set<Acessorio> acessorios = new HashSet<>();
 
-    public Carro(List<Aluguel> alugueis) {
+    public Carro() {
 
-        this.alugueis = alugueis;
     }
     public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modeloCarro, Boolean alugado) {
         this.id = id;
