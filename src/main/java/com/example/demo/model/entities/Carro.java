@@ -1,13 +1,14 @@
 package com.example.demo.model.entities;
 
 import com.example.demo.model.dto.CarroDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
 
 @Entity
 @Table(name = "tb_carro")
@@ -25,9 +26,6 @@ public class Carro {
     @JoinColumn(name = "modelo_carro_id")
     private ModeloCarro modeloCarro;
 
-    @OneToMany(mappedBy = "carro")
-    private List<Aluguel> alugueis;
-
     @ManyToMany
     @JoinTable(
             name = "tb_carro_acessorio",
@@ -36,9 +34,8 @@ public class Carro {
     )
     private Set<Acessorio> acessorios = new HashSet<>();
 
-    public Carro(List<Aluguel> alugueis) {
+    public Carro() {
 
-        this.alugueis = alugueis;
     }
     public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modeloCarro) {
         this.id = id;

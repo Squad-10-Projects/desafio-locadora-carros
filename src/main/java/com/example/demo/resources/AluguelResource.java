@@ -16,11 +16,6 @@ public class AluguelResource {
     @PostMapping("/confirmar")
     public ResponseEntity<String> confirmarAluguel(@RequestBody Aluguel aluguel){
         Aluguel aluguelConfirmado = aluguelService.confirmarAluguel(aluguel);
-
-        if (aluguelConfirmado != null) {
-            return ResponseEntity.ok("Aluguel confirmado com sucesso!");
-        } else {
-            return ResponseEntity.badRequest().body("Falha ao confirmar o aluguel.");
-        }
+        return ResponseEntity.ok("Aluguel confirmado com sucesso!");
     }
 }
