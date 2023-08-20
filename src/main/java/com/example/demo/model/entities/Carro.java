@@ -22,7 +22,7 @@ public class Carro {
     private String chassi;
     private String cor;
     private BigDecimal valorDiaria;
-    private Boolean alugado;
+    private Boolean disponivel;
 
     @ManyToOne
     @JoinColumn(name = "modelo_carro_id")
@@ -40,10 +40,6 @@ public class Carro {
     @OneToMany(mappedBy = "carro")
     private List<Aluguel> alugueis; // Relação reversa
 
-    public Carro() {
-
-    }
-
     public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modeloCarro, Boolean alugado) {
         this.id = id;
         this.placa = placa;
@@ -51,7 +47,7 @@ public class Carro {
         this.cor = cor;
         this.valorDiaria = valorDiaria;
         this.modeloCarro = modeloCarro;
-        this.alugado = false;
+        this.disponivel = true;
     }
 
     public Carro(CarroDTO dto, ModeloCarro modeloCarro) {
@@ -60,7 +56,7 @@ public class Carro {
         this.cor = dto.getCor();
         this.valorDiaria = dto.getValorDiaria();
         this.modeloCarro = modeloCarro;
-        this.alugado = false;
+        this.disponivel = true;
     }
 
     public Carro() {
@@ -115,7 +111,7 @@ public class Carro {
 
     public void setAcessorios(Set<Acessorio> acessorios) { this.acessorios = acessorios; }
 
-    public Boolean getAlugado() { return alugado; }
+    public Boolean getDisponivel() { return disponivel; }
 
-    public void setAlugado(Boolean alugado) { this.alugado = alugado; }
+    public void setDisponivel(Boolean alugado) { this.disponivel = disponivel; }
 }

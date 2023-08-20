@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.List;
+import com.example.demo.model.entities.Carro;
 
 @Entity
 @Table(name = "tb_aluguel")
@@ -15,9 +17,16 @@ public class Aluguel implements Serializable  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
+    @ManyToMany
+    @JoinTable(
+            name = "aluguel_carro",
+            joinColumns = @JoinColumn(name = "aluguel_id"),
+            inverseJoinColumns = @JoinColumn(name = "carro_id")
+    )
+    private List<Carro> carrosSelecionados;
     private LocalDate dataPedido;
     private LocalDate dataEntrega;
-    private Calendar dataDevolucao;
+    private LocalDate dataDevolucao;
     private BigDecimal valorTotal;
     private int quantidadeDias;
 
@@ -32,6 +41,16 @@ public class Aluguel implements Serializable  {
     public Aluguel() {
 
     }
+
+
+    public List<Carro> getCarrosSelecionados() {
+        return carrosSelecionados;
+    }
+
+    public void setCarrosSelecionados(List<Carro> carrosSelecionados) {
+        this.carrosSelecionados = carrosSelecionados;
+    }
+
     @ManyToOne
     @JoinColumn(name = "carro_id") // Nome da coluna de chave estrangeira na tabela de Aluguel
     private Carro carro;

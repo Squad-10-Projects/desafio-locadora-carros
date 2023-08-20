@@ -4,18 +4,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.services.AluguelService;
 import com.example.demo.model.entities.Aluguel;
+import com.example.demo.model.entities.Carrinho;
+import com.example.demo.model.entities.Carro;
+import java.util.List;
+import com.example.demo.repositories.AluguelRepository;
 
 
 @RestController
-@RequestMapping
+@RequestMapping("/aluguel")
 public class AluguelResource {
 
     @Autowired
     private AluguelService aluguelService;
+    @Autowired
+    private Carrinho carrinho;
 
-    @PostMapping("/confirmar")
-    public ResponseEntity<String> confirmarAluguel(@RequestBody Aluguel aluguel){
-        Aluguel aluguelConfirmado = aluguelService.confirmarAluguel(aluguel);
-        return ResponseEntity.ok("Aluguel confirmado com sucesso!");
+    @PostMapping("/confirmar/{pessoaId}")
+    public ResponseEntity<String> confirmarAluguel(@RequestBody Aluguel aluguel,@PathVariable Long pessoaId){
+        List<Carro> carrosSelecionados = carrinho.getCarrosSelecionados();
+        if (carrosSelecionados.isEmpty()) {
+            return ResponseEntity.badRequest().body("O carrinho está vazio");
+        }
+        Aluguel aluguelConfirmado = new Aluguel();
+        aluguelConfirmado.setCarrosSelecionados(carrosSelecionados);
+        aluguelService.confirmarAluguel(carrosSelecionados, aluguelConfirmado, pessoaId);
+        carrinho.limparCarrinho();
+        return ResponseEntity.ok("Aluguel concluído com sucesso");
+
+
     }
 }

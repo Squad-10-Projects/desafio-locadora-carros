@@ -23,20 +23,41 @@ public class AluguelService {
     @Autowired
     private PessoaService pessoaService;
 
-    public Aluguel confirmarAluguel(Aluguel aluguelConfirmado, Long pessoaID) {
+    public Aluguel confirmarAluguel(List<Carro> carrosSelecionados, Aluguel aluguelConfirmado, Long pessoaID) {
         Optional<Pessoa> pessoaExistente = pessoaService.verPessoa(pessoaID);
         Aluguel aluguelExistente = aluguelRepository.findById(aluguelConfirmado.getID())
                 .orElseThrow(() -> new EntityNotFoundException("Aluguel não encontrado"));
 
         if (pessoaExistente.isPresent()) {
             Pessoa pessoa = pessoaExistente.get();
+            aluguelExistente.setCarrosSelecionados(carrosSelecionados);
             aluguelExistente.setCarro(aluguelConfirmado.getCarro());
             aluguelExistente.setPessoa(aluguelConfirmado.getPessoa());
             aluguelExistente.setDataPedido(aluguelConfirmado.getDataPedido());
             aluguelExistente.setDataDevolucao(aluguelConfirmado.getDataDevolucao());
             aluguelExistente.setQuantidadeDias(aluguelConfirmado.getQuantidadeDias());
+            for (Carro carro : carrosSelecionados) {
+                carro.setDisponivel(false);
+                carroRepository.save(carro);
+            }
         }
         return aluguelRepository.save(aluguelExistente);
+    }
+    public void devolverCarro(Long carroId) {
+        Optional<Carro> carroOptional = carroRepository.findById(carroId);
+
+        if (carroOptional.isPresent()) {
+            Carro carro = carroOptional.get();
+
+            if (!carro.getDisponivel()) {
+                carro.setDisponivel(true);
+                carroRepository.save(carro);
+            } else {
+                throw new RuntimeException("Este carro já está disponível, não pode ser devolvido novamente.");
+            }
+        } else {
+            throw new EntityNotFoundException("Carro não encontrado");
+        }
     }
         public Aluguel carroAluguel(Long aluguelId, Long carroId){
         Aluguel aluguel = aluguelRepository.findById(aluguelId).orElseThrow(() -> new EntityNotFoundException("Aluguel não encontrado"));

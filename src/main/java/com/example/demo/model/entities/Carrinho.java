@@ -4,13 +4,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.example.demo.model.entities.Carro;
 
 @Component
 public class Carrinho {
 
     private List<Carro> carrosSelecionados;
+    private List<Aluguel> alugueisEmAndamento;
 
     public Carrinho() {
+
         carrosSelecionados = new ArrayList<>();
     }
 
@@ -25,9 +28,15 @@ public class Carrinho {
             throw new IndexOutOfBoundsException("Índice fora dos limites da lista");
         }
     }
-
+    public void adicionarAluguel(Aluguel aluguel) {
+        alugueisEmAndamento.add(aluguel);
+    }
     public List<Carro> getCarrosSelecionados() {
         return carrosSelecionados;
+    }
+
+    public void setCarrosSelecionados(List<Carro> carrosSelecionados) {
+        this.carrosSelecionados = carrosSelecionados;
     }
 
     public void limparCarrinho() {
