@@ -2,14 +2,13 @@ package com.example.demo.model.entities;
 
 
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
+
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.List;
-import com.example.demo.model.entities.Carro;
+
 
 @Entity
 @Table(name = "tb_aluguel")
