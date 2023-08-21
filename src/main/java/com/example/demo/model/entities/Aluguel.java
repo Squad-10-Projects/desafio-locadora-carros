@@ -61,7 +61,7 @@ public class Aluguel implements Serializable  {
         return (int) ChronoUnit.DAYS.between(dataEntrega, dataDevolucao);
     }
 
-    private BigDecimal calcularValorTotal() {
+    public BigDecimal calcularValorTotal() {
         int quantidadeDias = calcularQuantidadeDias();
         BigDecimal valorDiaria = carro.getValorDiaria();
         return valorDiaria.multiply(BigDecimal.valueOf(quantidadeDias));
