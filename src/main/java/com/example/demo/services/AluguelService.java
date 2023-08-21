@@ -33,7 +33,7 @@ public class AluguelService {
             Motorista motorista = motoristaExistente.get();
             aluguelExistente.setCarrosSelecionados(carrosSelecionados);
             aluguelExistente.setCarro(aluguelConfirmado.getCarro());
-            aluguelExistente.setPessoa(aluguelConfirmado.getPessoa());
+            aluguelExistente.setMotorista(aluguelConfirmado.getMotorista());
             aluguelExistente.setDataPedido(aluguelConfirmado.getDataPedido());
             aluguelExistente.setDataDevolucao(aluguelConfirmado.getDataDevolucao());
             aluguelExistente.setQuantidadeDias(aluguelConfirmado.getQuantidadeDias());

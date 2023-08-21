@@ -30,6 +30,10 @@ public class Aluguel implements Serializable  {
     private BigDecimal valorTotal;
     private int quantidadeDias;
 
+    @ManyToOne
+    @JoinColumn(name = "motorista_id") // Nome da coluna de chave estrangeira na tabela de Aluguel
+    private Motorista motorista;
+
     public Aluguel(LocalDate dataPedido, LocalDate dataEntrega, LocalDate dataDevolucao, BigDecimal valorTotal, int quantidadeDias){
         this.dataPedido = dataPedido;
         this.dataEntrega = dataEntrega;
@@ -41,7 +45,6 @@ public class Aluguel implements Serializable  {
     public Aluguel() {
 
     }
-
 
     public List<Carro> getCarrosSelecionados() {
         return carrosSelecionados;
@@ -71,21 +74,9 @@ public class Aluguel implements Serializable  {
         this.quantidadeDias = quantidadeDias;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "apolice_id")
     private ApoliceSeguro apoliceSeguro;
-
-    @ManyToOne
-    @JoinColumn(name = "pessoa_id") // Nome da coluna que faz a relação com Pessoa
-    private Pessoa pessoa;
 
     public long getID() {
         return ID;
@@ -125,6 +116,22 @@ public class Aluguel implements Serializable  {
 
     public void setValorTotal(BigDecimal valorTotal) {
         this.valorTotal = valorTotal;
+    }
+
+    public Motorista getMotorista() {
+        return motorista;
+    }
+
+    public void setMotorista(Motorista motorista) {
+        this.motorista = motorista;
+    }
+
+    public ApoliceSeguro getApoliceSeguro() {
+        return apoliceSeguro;
+    }
+
+    public void setApoliceSeguro(ApoliceSeguro apoliceSeguro) {
+        this.apoliceSeguro = apoliceSeguro;
     }
 }
 
