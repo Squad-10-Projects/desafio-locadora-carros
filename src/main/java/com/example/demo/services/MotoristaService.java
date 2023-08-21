@@ -22,7 +22,7 @@ public class MotoristaService {
         return motoristaRepository.save(motorista);
     }
 
-    public List<Motorista> verMotoristas() {
+    public  List<Motorista> verMotoristas() {
         return motoristaRepository.findAll();
     }
 

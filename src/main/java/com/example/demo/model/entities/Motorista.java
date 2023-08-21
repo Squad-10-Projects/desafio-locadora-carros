@@ -1,14 +1,21 @@
 package com.example.demo.model.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_motorista")
 public class Motorista extends Pessoa {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long motoristaID;
+
+    @OneToMany(mappedBy = "motorista")
+    private List<Aluguel> alugueis = new ArrayList<>();
 
     private String numeroCNH;
 
