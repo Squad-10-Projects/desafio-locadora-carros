@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/carrinho")
 @Tag(name = "Carrinho")
@@ -19,12 +17,17 @@ public class CarrinhoResource {
     private CarrinhoService service;
 
     @Operation(
-            description = "Retorna as informações de todos os carros no carrinho",
-            summary = "Obtem todos os carros no carrinho")
-    @GetMapping("/carros")
-    public ResponseEntity<List<Carro>> listarCarrosNoCarrinho() {
-        List<Carro> carrosNoCarrinho = service.listarCarrosNoCarrinho();
-        return ResponseEntity.ok(carrosNoCarrinho);
+            description = "Retorna o carro selecionado no carrinho",
+            summary = "Obtem o carro selecionado no carrinho")
+    @GetMapping
+    public ResponseEntity<Carro> obterCarroSelecionado() {
+        Carro carroSelecionado = service.listarCarroNoCarrinho();
+
+        if (carroSelecionado != null) {
+            return ResponseEntity.ok(carroSelecionado);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Operation(
@@ -37,20 +40,12 @@ public class CarrinhoResource {
     }
 
     @Operation(
-            description = "Remove um carro ao carrinho pelo index e retorna uma mensagem de confirmação",
-            summary = "Remove um carro do carrinho")
-    @DeleteMapping("/remover/{carroIndex}")
-    public ResponseEntity<String> removerDoCarrinho(@PathVariable int carroIndex) {
-        service.removerCarroDoCarrinho(carroIndex);
+            description = "Remove o carro do carrinho e retorna uma mensagem de confirmação",
+            summary = "Remove o carro do carrinho")
+    @DeleteMapping("/remover")
+    public ResponseEntity<String> removerDoCarrinho() {
+        service.removerCarroDoCarrinho();
         return ResponseEntity.ok("Carro removido do carrinho");
     }
 
-    @Operation(
-            description = "Remove todos os carros do carrinho e retorna uma mensagem de confirmação",
-            summary = "Remove todos os carros do carrinho")
-    @DeleteMapping("/limpar")
-    public ResponseEntity<String> limparCarrinho() {
-        service.limparCarrinho();
-        return ResponseEntity.ok("Carrinho foi limpo");
-    }
 }

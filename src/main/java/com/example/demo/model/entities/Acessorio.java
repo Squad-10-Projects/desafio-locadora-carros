@@ -1,6 +1,7 @@
 package com.example.demo.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -16,6 +17,7 @@ public class Acessorio {
 
     private String descricao;
 
+    @JsonIgnore
     @JsonBackReference
     @ManyToMany(mappedBy = "acessorios", fetch = FetchType.EAGER)
     private Set<Carro> carros = new HashSet<>();

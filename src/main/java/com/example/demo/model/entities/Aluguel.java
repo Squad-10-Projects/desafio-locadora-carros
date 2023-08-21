@@ -1,14 +1,13 @@
 package com.example.demo.model.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
-
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "tb_aluguel")
@@ -16,50 +15,64 @@ public class Aluguel implements Serializable  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
-    @ManyToMany
-    @JoinTable(
-            name = "aluguel_carro",
-            joinColumns = @JoinColumn(name = "aluguel_id"),
-            inverseJoinColumns = @JoinColumn(name = "carro_id")
-    )
 
-    private List<Carro> carrosSelecionados;
+    @ManyToOne
+    @JoinColumn(name = "carro_id")
+    private Carro carro;
+
+    @ManyToOne
+    @JoinColumn(name = "motorista_id")
+    private Motorista motorista;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "apolice_id")
+    private ApoliceSeguro apoliceSeguro;
+
     private LocalDate dataPedido;
     private LocalDate dataEntrega;
     private LocalDate dataDevolucao;
     private BigDecimal valorTotal;
     private int quantidadeDias;
 
-    @ManyToOne
-    @JoinColumn(name = "motorista_id") // Nome da coluna de chave estrangeira na tabela de Aluguel
-    private Motorista motorista;
-
-    public Aluguel(LocalDate dataPedido, LocalDate dataEntrega, LocalDate dataDevolucao, BigDecimal valorTotal, int quantidadeDias){
-        this.dataPedido = dataPedido;
-        this.dataEntrega = dataEntrega;
-        this.dataDevolucao = dataDevolucao;
-        this.valorTotal = valorTotal;
-        this.quantidadeDias = quantidadeDias;
-    }
-
     public Aluguel() {
 
     }
 
-    public List<Carro> getCarrosSelecionados() {
-        return carrosSelecionados;
+    public Aluguel(LocalDate dataPedido, LocalDate dataEntrega, LocalDate dataDevolucao){
+        this.dataPedido = dataPedido;
+        this.dataEntrega = dataEntrega;
+        this.dataDevolucao = dataDevolucao;
+        this.valorTotal = calcularValorTotal();
+        this.quantidadeDias = calcularQuantidadeDias();
     }
 
-    public void setCarrosSelecionados(List<Carro> carrosSelecionados) {
-        this.carrosSelecionados = carrosSelecionados;
+    public Aluguel(LocalDate dataEntrega, LocalDate dataDevolucao, Motorista motorista, Carro carro) {
+        this.carro = carro;
+        this.dataPedido = LocalDate.now();
+        this.dataEntrega = dataEntrega;
+        this.dataDevolucao = dataDevolucao;
+        this.valorTotal = calcularValorTotal();
+        this.quantidadeDias = calcularQuantidadeDias();
+        this.motorista = motorista;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "carro_id") // Nome da coluna de chave estrangeira na tabela de Aluguel
-    private Carro carro;
+    public int calcularQuantidadeDias() {
+        return (int) ChronoUnit.DAYS.between(dataEntrega, dataDevolucao);
+    }
 
-    public int getQuantidadeDias() {
-        return quantidadeDias;
+    private BigDecimal calcularValorTotal() {
+        int quantidadeDias = calcularQuantidadeDias();
+        BigDecimal valorDiaria = carro.getValorDiaria();
+        return valorDiaria.multiply(BigDecimal.valueOf(quantidadeDias));
+    }
+
+    public long getID() {
+        return ID;
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
     }
 
     public Carro getCarro() {
@@ -70,20 +83,20 @@ public class Aluguel implements Serializable  {
         this.carro = carro;
     }
 
-    public void setQuantidadeDias(int quantidadeDias) {
-        this.quantidadeDias = quantidadeDias;
+    public Motorista getMotorista() {
+        return motorista;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "apolice_id")
-    private ApoliceSeguro apoliceSeguro;
-
-    public long getID() {
-        return ID;
+    public void setMotorista(Motorista motorista) {
+        this.motorista = motorista;
     }
 
-    public void setID(long ID) {
-        this.ID = ID;
+    public ApoliceSeguro getApoliceSeguro() {
+        return apoliceSeguro;
+    }
+
+    public void setApoliceSeguro(ApoliceSeguro apoliceSeguro) {
+        this.apoliceSeguro = apoliceSeguro;
     }
 
     public LocalDate getDataPedido() {
@@ -118,20 +131,12 @@ public class Aluguel implements Serializable  {
         this.valorTotal = valorTotal;
     }
 
-    public Motorista getMotorista() {
-        return motorista;
+    public int getQuantidadeDias() {
+        return quantidadeDias;
     }
 
-    public void setMotorista(Motorista motorista) {
-        this.motorista = motorista;
-    }
-
-    public ApoliceSeguro getApoliceSeguro() {
-        return apoliceSeguro;
-    }
-
-    public void setApoliceSeguro(ApoliceSeguro apoliceSeguro) {
-        this.apoliceSeguro = apoliceSeguro;
+    public void setQuantidadeDias(int quantidadeDias) {
+        this.quantidadeDias = quantidadeDias;
     }
 }
 

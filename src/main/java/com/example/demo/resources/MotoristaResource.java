@@ -1,5 +1,6 @@
 package com.example.demo.resources;
 
+import com.example.demo.model.entities.Aluguel;
 import com.example.demo.model.entities.Motorista;
 import com.example.demo.repositories.MotoristaRepository;
 import com.example.demo.services.MotoristaService;
@@ -86,5 +87,11 @@ public class MotoristaResource {
         } else {
             return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/{motoristaId}/alugueis")
+    public ResponseEntity<List<Aluguel>> alugueisConfirmadosEDetalhesFuturos(@PathVariable Long motoristaId) {
+        List<Aluguel> alugueis = motoristaService.alugueisConfirmadosEDetalhesFuturos(motoristaId);
+        return ResponseEntity.ok(alugueis);
     }
 }

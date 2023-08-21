@@ -1,11 +1,14 @@
 package com.example.demo.services;
 
+import com.example.demo.model.entities.Aluguel;
 import com.example.demo.model.entities.Motorista;
 import com.example.demo.model.entities.Pessoa;
+import com.example.demo.repositories.AluguelRepository;
 import com.example.demo.repositories.MotoristaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +17,9 @@ public class MotoristaService {
 
     @Autowired
     private MotoristaRepository motoristaRepository;
+
+    @Autowired
+    private AluguelRepository aluguelRepository;
 
     public Motorista adicionaMotorista(Motorista motorista) {
         if(motoristaRepository.existsByEmail(motorista.getEmail())) {
@@ -54,4 +60,9 @@ public class MotoristaService {
     public boolean existeMotoristaComEmail(String email) {
         return motoristaRepository.existsByEmail(email);
     }
+
+    public List<Aluguel> alugueisConfirmadosEDetalhesFuturos(Long motoristaId) {
+        return aluguelRepository.findByMotoristaIdAndDataDevolucaoAfter(motoristaId, LocalDate.now());
+    }
+
 }

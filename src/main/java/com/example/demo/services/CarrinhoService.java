@@ -18,22 +18,20 @@ public class CarrinhoService {
     @Autowired
     private CarroRepository carroRepository;
 
-    public List<Carro> listarCarrosNoCarrinho() {
-        List<Carro> carrosNoCarrinho = carrinho.getCarrosSelecionados();
-        return carrosNoCarrinho;
+    public Carro listarCarroNoCarrinho() {
+        return carrinho.getCarroSelecionado();
     }
 
     public void adicionarCarroAoCarrinho(Long carroId) {
-        Carro carro = carroRepository.findById(carroId)
-                .orElseThrow(() -> new EntityNotFoundException("Carro não encontrado"));
-        carrinho.adicionarCarro(carro);
+        if (carrinho.getCarroSelecionado() == null) {
+            Carro carro = carroRepository.findById(carroId)
+                    .orElseThrow(() -> new EntityNotFoundException("Carro não encontrado"));
+            carrinho.adicionarCarro(carro);
+        }
     }
 
-    public void removerCarroDoCarrinho(int index) {
-        carrinho.removerCarro(index);
-    }
-
-    public void limparCarrinho() {
+    public void removerCarroDoCarrinho() {
         carrinho.limparCarrinho();
     }
+
 }

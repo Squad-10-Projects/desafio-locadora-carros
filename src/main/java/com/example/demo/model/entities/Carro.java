@@ -37,9 +37,6 @@ public class Carro {
     )
     private Set<Acessorio> acessorios = new HashSet<>();
 
-    @OneToMany(mappedBy = "carro")
-    private List<Aluguel> alugueis; // Relação reversa
-
     public Carro(Long id, String placa, String chassi, String cor, BigDecimal valorDiaria, ModeloCarro modeloCarro, Boolean alugado) {
         this.id = id;
         this.placa = placa;
@@ -115,7 +112,4 @@ public class Carro {
 
     public void setDisponivel(Boolean disponivel) { this.disponivel = disponivel; }
 
-    public List<Aluguel> getAlugueis() { return alugueis; }
-
-    public void setAlugueis(List<Aluguel> alugueis) { this.alugueis = alugueis; }
 }

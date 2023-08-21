@@ -2,11 +2,13 @@ package com.example.demo.model.dto;
 
 import com.example.demo.model.entities.Acessorio;
 import com.example.demo.model.entities.Carro;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class AcessorioDTO {
 
     private Long id;
     private String descricao;
+    @JsonIgnore
     private Long[] carrosId;
 
     public AcessorioDTO() {

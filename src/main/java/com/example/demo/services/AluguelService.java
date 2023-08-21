@@ -1,85 +1,48 @@
 package com.example.demo.services;
 
-
 import com.example.demo.model.entities.Aluguel;
+import com.example.demo.model.entities.Carrinho;
 import com.example.demo.model.entities.Motorista;
 import com.example.demo.repositories.CarroRepository;
+import com.example.demo.repositories.MotoristaRepository;
 import com.example.demo.services.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.repositories.AluguelRepository;
 import com.example.demo.model.entities.Carro;
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
 
 @Service
 public class AluguelService {
 
     @Autowired
     private AluguelRepository aluguelRepository;
+
+    @Autowired
+    private Carrinho carrinho;
+
+    @Autowired
+    private MotoristaRepository motoristaRepository;
+
     @Autowired
     private CarroRepository carroRepository;
-    @Autowired
-    private MotoristaService motoristaService;
 
-    MotoristaService ms = new MotoristaService();
-    public Aluguel confirmarAluguel(List<Carro> carrosSelecionados, Aluguel aluguelConfirmado, Long motoristaID) {
-        Optional<Motorista> motoristaExistente = motoristaService.verMotorista(motoristaID);
-        Aluguel aluguelExistente = aluguelRepository.findById(aluguelConfirmado.getID())
-                .orElseThrow(() -> new EntityNotFoundException("Aluguel não encontrado"));
-
-        if (motoristaExistente.isPresent()){
-            Motorista motorista = motoristaExistente.get();
-            aluguelExistente.setCarrosSelecionados(carrosSelecionados);
-            aluguelExistente.setCarro(aluguelConfirmado.getCarro());
-            aluguelExistente.setMotorista(aluguelConfirmado.getMotorista());
-            aluguelExistente.setDataPedido(aluguelConfirmado.getDataPedido());
-            aluguelExistente.setDataDevolucao(aluguelConfirmado.getDataDevolucao());
-            aluguelExistente.setQuantidadeDias(aluguelConfirmado.getQuantidadeDias());
-            for (Carro carro : carrosSelecionados) {
-                carro.setDisponivel(false);
-                carroRepository.save(carro);
-            }
+    public Aluguel criarAluguel(Long motoristaId,LocalDate dataEntrega, LocalDate dataDevolucao) {
+        Motorista motorista = motoristaRepository.findById(motoristaId)
+                .orElseThrow(() -> new EntityNotFoundException("Motorista não encontrado"));
+        Carro carroSelecionado = carrinho.getCarroSelecionado();
+        if (carroSelecionado == null) {
+            throw new IllegalStateException("Nenhum carro selecionado no carrinho");
         }
-        return aluguelRepository.save(aluguelExistente);
-    }
-    public void devolverCarro(Long carroId) {
-        Optional<Carro> carroOptional = carroRepository.findById(carroId);
 
-        if (carroOptional.isPresent()) {
-            Carro carro = carroOptional.get();
+        Aluguel aluguel = new Aluguel(dataEntrega, dataDevolucao, motorista, carroSelecionado);
+        aluguelRepository.save(aluguel);
 
-            if (!carro.getDisponivel()) {
-                carro.setDisponivel(true);
-                carroRepository.save(carro);
-            } else {
-                throw new RuntimeException("Este carro já está disponível, não pode ser devolvido novamente.");
-            }
-        } else {
-            throw new EntityNotFoundException("Carro não encontrado");
-        }
-    }
-        public Aluguel carroAluguel(Long aluguelId, Long carroId){
-        Aluguel aluguel = aluguelRepository.findById(aluguelId).orElseThrow(() -> new EntityNotFoundException("Aluguel não encontrado"));
-        Carro carro = carroRepository.findById(carroId).orElseThrow(() -> new EntityNotFoundException("Carro não encontrado"));
+        carroSelecionado.setDisponivel(false);
+        carroRepository.save(carroSelecionado);
 
-        aluguel.setCarro(carro);
+        carrinho.limparCarrinho();
 
-        return aluguelRepository.save(aluguel);
-    }
-
-    public BigDecimal calcularValorAluguel(Aluguel aluguel){
-        Carro carro = aluguel.getCarro();
-        BigDecimal valorDiaria = carro.getValorDiaria();
-        int quantidadeDias = aluguel.getQuantidadeDias();
-        BigDecimal valorTotal = valorDiaria.multiply(BigDecimal.valueOf(quantidadeDias));
-        return valorTotal;
-    }
-    public List<Aluguel> getAluguel() {
-        return aluguelRepository.findAll();
-    }
-    public Optional<Aluguel> getAluguel(Long id) {
-        return aluguelRepository.findById(id);
+        return aluguel;
     }
 }

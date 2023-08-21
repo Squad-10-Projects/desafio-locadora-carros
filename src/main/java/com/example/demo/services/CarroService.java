@@ -44,7 +44,7 @@ public class CarroService {
     }
 
     public List<CarroDTO> listarVeiculosDisponiveis() {
-        List<Carro> veiculosDisponiveis = repository.findByDisponivelFalse();
+        List<Carro> veiculosDisponiveis = repository.findByDisponivelTrue();
         return mapper.listModelToListDto(veiculosDisponiveis);
     }
 

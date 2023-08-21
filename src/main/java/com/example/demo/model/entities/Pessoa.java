@@ -23,8 +23,6 @@ public class Pessoa implements Serializable {
     private Date dataNascimento;
     private String cpf;
 
-
-
     @Enumerated(EnumType.STRING)
     @Column(name="sexo")
     @NotNull
