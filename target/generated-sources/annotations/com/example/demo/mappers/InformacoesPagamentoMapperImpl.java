@@ -5,12 +5,11 @@ import com.example.demo.model.entities.InformacoesPagamento;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
-
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-21T02:31:40-0300",
+    date = "2023-08-21T19:13:15-0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 20.0.2 (Oracle Corporation)"
 )
 @Component
@@ -38,15 +37,9 @@ public class InformacoesPagamentoMapperImpl implements InformacoesPagamentoMappe
 
         InformacoesPagamentoDTO informacoesPagamentoDTO = new InformacoesPagamentoDTO();
 
-        if ( entity.getId() != null ) {
-            informacoesPagamentoDTO.setId( entity.getId() );
-        }
-        if ( entity.getNumeroCartao() != null ) {
-            informacoesPagamentoDTO.setNumeroCartao( entity.getNumeroCartao() );
-        }
-        if ( entity.getDataExpiracao() != null ) {
-            informacoesPagamentoDTO.setDataExpiracao( entity.getDataExpiracao() );
-        }
+        informacoesPagamentoDTO.setId( entity.getId() );
+        informacoesPagamentoDTO.setNumeroCartao( entity.getNumeroCartao() );
+        informacoesPagamentoDTO.setDataExpiracao( entity.getDataExpiracao() );
         informacoesPagamentoDTO.setCvv( entity.getCvv() );
 
         return informacoesPagamentoDTO;
@@ -60,15 +53,9 @@ public class InformacoesPagamentoMapperImpl implements InformacoesPagamentoMappe
 
         InformacoesPagamento informacoesPagamento = new InformacoesPagamento();
 
-        if ( dto.getId() != null ) {
-            informacoesPagamento.setId( dto.getId() );
-        }
-        if ( dto.getNumeroCartao() != null ) {
-            informacoesPagamento.setNumeroCartao( dto.getNumeroCartao() );
-        }
-        if ( dto.getDataExpiracao() != null ) {
-            informacoesPagamento.setDataExpiracao( dto.getDataExpiracao() );
-        }
+        informacoesPagamento.setId( dto.getId() );
+        informacoesPagamento.setNumeroCartao( dto.getNumeroCartao() );
+        informacoesPagamento.setDataExpiracao( dto.getDataExpiracao() );
         informacoesPagamento.setCvv( dto.getCvv() );
 
         return informacoesPagamento;

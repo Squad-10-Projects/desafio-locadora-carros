@@ -1,10 +1,14 @@
 package com.example.demo.model.dto;
 
 import com.example.demo.model.entities.Acessorio;
+import com.example.demo.model.entities.Carro;
+import jakarta.validation.constraints.Size;
 
 public class AcessorioDTO {
 
     private Long id;
+
+    @Size(max = 255, message = "A descrição deve ter no máximo 255 caracteres")
     private String descricao;
 
     public AcessorioDTO() {

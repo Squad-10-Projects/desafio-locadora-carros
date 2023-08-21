@@ -5,7 +5,7 @@ import com.example.demo.model.entities.InformacoesPagamento;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 
-@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+@Mapper(componentModel = "spring")
 public interface InformacoesPagamentoMapper extends MapperBase<InformacoesPagamento, InformacoesPagamentoDTO> {
     @Override
     InformacoesPagamentoDTO modelToDTO(InformacoesPagamento entity);

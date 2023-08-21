@@ -10,16 +10,19 @@ import com.example.demo.services.exceptions.EntityNotFoundException;
 import com.example.demo.model.entities.Carro;
 import com.example.demo.model.entities.ModeloCarro;
 import com.example.demo.repositories.CarroRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
+@Validated
 public class CarroService {
 
     @Autowired
@@ -78,7 +81,7 @@ public class CarroService {
                 .collect(Collectors.toList());
     }
 
-    public CarroDTO salvar(CarroDTO dto) {
+    public CarroDTO salvar(@Valid CarroDTO dto) {
         ModeloCarro modeloCarro = modeloCarroRepository.findById(dto.getModeloCarroId())
                 .orElseThrow(() -> new EntityNotFoundException("Modelo não encontrado"));
 
@@ -94,7 +97,7 @@ public class CarroService {
         return mapper.modelToDTO(carro);
     }
 
-    public CarroDTO atualizar(Long id, CarroDTO carroDTO) {
+    public CarroDTO atualizar(Long id, @Valid CarroDTO carroDTO) {
         Carro carro = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Carro não encontrado"));
         Carro carroAtualizado = mapper.dtoToModel(carroDTO);
         carroAtualizado.setId(carro.getId());

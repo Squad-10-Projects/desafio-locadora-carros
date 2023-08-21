@@ -1,12 +1,18 @@
 package com.example.demo.model.dto;
 
 import com.example.demo.model.entities.InformacoesPagamento;
+import jakarta.validation.constraints.*;
 
 public class InformacoesPagamentoDTO {
 
     private Long id;
+    @NotBlank(message = "O número do cartão não pode ser vazio")
     private String numeroCartao;
+    @NotBlank(message = "A data de expiração não pode estar vazia")
+    @Pattern(regexp = "^(0[1-9]|1[0-2])/\\d{2}$", message = "A data de expiração deve estar no formato MM/AA")
     private String dataExpiracao;
+    @Min(value = 100, message = "O CVV deve ter pelo menos 3 dígitos")
+    @Digits(integer = 4, fraction = 0, message = "O CVV deve ter entre 3 e 4 dígitos")
     private int cvv;
 
     public InformacoesPagamentoDTO() {

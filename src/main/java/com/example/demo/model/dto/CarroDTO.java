@@ -2,15 +2,27 @@ package com.example.demo.model.dto;
 
 import com.example.demo.model.entities.Acessorio;
 import com.example.demo.model.entities.Carro;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
 public class CarroDTO {
 
     private Long id;
+    @NotBlank(message = "A placa não pode estar vazia")
+    @Size(max = 10, message = "A placa deve ter no máximo 10 caracteres")
     private String placa;
+    @NotBlank(message = "O chassi não pode estar vazio")
+    @Size(max = 17, message = "O chassi deve ter no máximo 17 caracteres")
     private String chassi;
+    @NotBlank(message = "A cor não pode estar vazia")
+    @Size(max = 50, message = "A cor deve ter no máximo 50 caracteres")
     private String cor;
+    @NotNull(message = "O valor da diária não pode ser nulo")
+    @PositiveOrZero(message = "O valor da diária deve ser positivo ou zero")
     private BigDecimal valorDiaria;
     private Long modeloCarroId;
     private Long[] acessoriosId;

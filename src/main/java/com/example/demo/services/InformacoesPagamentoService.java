@@ -5,16 +5,20 @@ import com.example.demo.mappers.InformacoesPagamentoMapper;
 import com.example.demo.model.dto.InformacoesPagamentoDTO;
 import com.example.demo.model.entities.InformacoesPagamento;
 import com.example.demo.repositories.InformacoesPagamentoRepository;
+import com.example.demo.services.exceptions.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 
 import java.util.List;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
+@Validated
 public class InformacoesPagamentoService {
 
     @Autowired
@@ -34,7 +38,7 @@ public class InformacoesPagamentoService {
                 .orElseThrow(() -> new EntityNotFoundException("Informações de pagamento não encontradas")));
     }
 
-    public InformacoesPagamentoDTO criarInformacoesPagamento(InformacoesPagamentoDTO informacoesPagamentoDTO) {
+    public InformacoesPagamentoDTO criarInformacoesPagamento(@Valid InformacoesPagamentoDTO informacoesPagamentoDTO) {
         InformacoesPagamento informacoesPagamento = mapper.dtoToModel(informacoesPagamentoDTO);
         informacoesPagamento = repository.save(informacoesPagamento);
         return mapper.modelToDTO(informacoesPagamento);
@@ -44,7 +48,7 @@ public class InformacoesPagamentoService {
         return repository.findById(informacoesPagamentoId).orElseThrow(() -> new EntityNotFoundException("Informações de pagamento não encontradas"));
     }
 
-    public InformacoesPagamentoDTO atualizarInformacoesPagamento(Long id, InformacoesPagamentoDTO informacoesPagamentoDTO) {
+    public InformacoesPagamentoDTO atualizarInformacoesPagamento(Long id, @Valid InformacoesPagamentoDTO informacoesPagamentoDTO) {
         InformacoesPagamento informacoesPagamento = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Informações de pagamento não encontradas"));
         InformacoesPagamento informacoesPagamentoAtualizado = mapper.dtoToModel(informacoesPagamentoDTO);
         informacoesPagamentoAtualizado.setId(informacoesPagamento.getId());

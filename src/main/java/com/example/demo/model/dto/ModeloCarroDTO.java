@@ -2,12 +2,21 @@ package com.example.demo.model.dto;
 
 import com.example.demo.model.entities.Categoria;
 import com.example.demo.model.entities.ModeloCarro;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class ModeloCarroDTO {
 
     private Long id;
+    @NotBlank(message = "A descrição não pode ser vazia")
+    @Size(min = 5, max = 100, message = "A descrição deve ter entre 5 e 100 caracteres")
     private String descricao;
+    @NotNull(message = "A categoria não pode ser nula")
     private Categoria categoria;
+    @NotNull(message = "O ID do fabricante não pode ser nulo")
+    @Min(value = 1, message = "O ID do fabricante deve ser maior ou igual a 1")
     private Long fabricanteId;
     public ModeloCarroDTO() {
 

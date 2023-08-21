@@ -5,15 +5,20 @@ import com.example.demo.mappers.FabricanteMapper;
 import com.example.demo.model.dto.FabricanteDTO;
 import com.example.demo.model.entities.Fabricante;
 import com.example.demo.repositories.FabricanteRepository;
+import com.example.demo.services.exceptions.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
+
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
+@Validated
 public class FabricanteService {
 
     @Autowired
@@ -33,13 +38,13 @@ public class FabricanteService {
                 .orElseThrow(() -> new EntityNotFoundException("Fabricante não encontrado")));
     }
 
-    public FabricanteDTO salvar(FabricanteDTO dto) {
+    public FabricanteDTO salvar(@Valid FabricanteDTO dto) {
         Fabricante fabricante = mapper.dtoToModel(dto);
         fabricante = repository.save(fabricante);
         return mapper.modelToDTO(fabricante);
     }
 
-    public FabricanteDTO atualizar(Long id, FabricanteDTO fabricanteDTO) {
+    public FabricanteDTO atualizar(Long id, @Valid FabricanteDTO fabricanteDTO) {
         Fabricante fabricante = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Carro não encontrado"));
         Fabricante fabricanteAtualizado = mapper.dtoToModel(fabricanteDTO);
         fabricanteAtualizado.setId(fabricante.getId());

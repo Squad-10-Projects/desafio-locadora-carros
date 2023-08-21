@@ -1,33 +1,41 @@
-package com.example.demo.model.entities;
+package com.example.demo.model.dto;
 
-import jakarta.persistence.*;
+import com.example.demo.model.entities.ApoliceSeguro;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name="tb_apolice")
-public class ApoliceSeguro implements Serializable {
+public class ApoliceSeguroDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
+    @NotNull(message = "O valor da franquia não pode ser nulo")
+    @Positive(message = "O valor da franquia deve ser positivo")
+    @DecimalMin(value = "0.01", message = "O valor da franquia deve ser maior ou igual a 0.01")
     private BigDecimal valorFranquia;
     private boolean protecaoTerceiro;
     private boolean protecaoCausasNaturais;
     private boolean protecaoRoubo;
 
+    public ApoliceSeguroDTO() {
 
-    @OneToOne
-    @JoinColumn(name = "aluguel_id")
-    private Aluguel aluguel;
+    }
 
-    public long getId() {
+    public ApoliceSeguroDTO(ApoliceSeguro entity) {
+        this.id = entity.getId();
+        this.valorFranquia = entity.getValorFranquia();
+        this.protecaoTerceiro = entity.isProtecaoTerceiro();
+        this.protecaoCausasNaturais = entity.isProtecaoCausasNaturais();
+        this.protecaoRoubo = entity.isProtecaoRoubo();
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -49,14 +57,6 @@ public class ApoliceSeguro implements Serializable {
 
     public boolean isProtecaoCausasNaturais() {
         return protecaoCausasNaturais;
-    }
-
-    public Aluguel getAluguel() {
-        return aluguel;
-    }
-
-    public void setAluguel(Aluguel aluguel) {
-        this.aluguel = aluguel;
     }
 
     public void setProtecaoCausasNaturais(boolean protecaoCausasNaturais) {
