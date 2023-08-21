@@ -23,6 +23,7 @@ public class Aluguel implements Serializable  {
             joinColumns = @JoinColumn(name = "aluguel_id"),
             inverseJoinColumns = @JoinColumn(name = "carro_id")
     )
+
     private List<Carro> carrosSelecionados;
     private LocalDate dataPedido;
     private LocalDate dataEntrega;

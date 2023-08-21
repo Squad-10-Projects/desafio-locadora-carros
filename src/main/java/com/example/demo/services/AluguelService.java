@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 
 import com.example.demo.model.entities.Aluguel;
+import com.example.demo.model.entities.Motorista;
 import com.example.demo.repositories.CarroRepository;
 import com.example.demo.services.exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import com.example.demo.model.entities.Carro;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import com.example.demo.model.entities.Pessoa;
 
 @Service
 public class AluguelService {
@@ -21,15 +21,16 @@ public class AluguelService {
     @Autowired
     private CarroRepository carroRepository;
     @Autowired
-    private PessoaService pessoaService;
+    private MotoristaService motoristaService;
 
-    public Aluguel confirmarAluguel(List<Carro> carrosSelecionados, Aluguel aluguelConfirmado, Long pessoaID) {
-        Optional<Pessoa> pessoaExistente = pessoaService.verPessoa(pessoaID);
+    MotoristaService ms = new MotoristaService();
+    public Aluguel confirmarAluguel(List<Carro> carrosSelecionados, Aluguel aluguelConfirmado, Long motoristaID) {
+        Optional<Motorista> motoristaExistente = motoristaService.verMotorista(motoristaID);
         Aluguel aluguelExistente = aluguelRepository.findById(aluguelConfirmado.getID())
                 .orElseThrow(() -> new EntityNotFoundException("Aluguel não encontrado"));
 
-        if (pessoaExistente.isPresent()) {
-            Pessoa pessoa = pessoaExistente.get();
+        if (motoristaExistente.isPresent()){
+            Motorista motorista = motoristaExistente.get();
             aluguelExistente.setCarrosSelecionados(carrosSelecionados);
             aluguelExistente.setCarro(aluguelConfirmado.getCarro());
             aluguelExistente.setPessoa(aluguelConfirmado.getPessoa());

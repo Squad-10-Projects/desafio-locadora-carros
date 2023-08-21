@@ -23,8 +23,7 @@ public class Pessoa implements Serializable {
     private Date dataNascimento;
     private String cpf;
 
-    @OneToMany(mappedBy = "pessoa")
-    private List<Aluguel> alugueis = new ArrayList<>();
+
 
     @Enumerated(EnumType.STRING)
     @Column(name="sexo")
